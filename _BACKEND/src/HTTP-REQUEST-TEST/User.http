@@ -1,0 +1,21 @@
+# getAll
+GET http://localhost:3000/users/getAll  HTTP/1.1
+
+###
+
+# getOne
+GET http://localhost:3000/users/getOne/6567407b511b8e7102c02627 HTTP/1.1
+
+###
+
+# create
+POST http://localhost:3000/users/create HTTP/1.1
+content-type: application/json
+
+{ 
+        "username": "migue",
+        "password": "1234",
+        "email": "wmigue@gmail.com",
+        "avatarURL": "url/url2/url3"
+}
+
