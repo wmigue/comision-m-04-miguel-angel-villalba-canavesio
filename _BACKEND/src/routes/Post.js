@@ -1,8 +1,10 @@
 const router = require('express').Router()
-const { index } = require('../controllers/Post')
+const { index, getAll, create } = require('../controllers/Post')
 const isAuthenticated = require('../middlewares/auth.js')
 
-router.post('/', isAuthenticated, index)
+router.post('/', index)
+router.get('/todos', getAll)
+router.post('/nuevo', isAuthenticated, create)
 
 
 

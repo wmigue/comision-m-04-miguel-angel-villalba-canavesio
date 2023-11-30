@@ -2,28 +2,44 @@
 import Fetch from '../src/hooks/useFetch'
 import { API_URL, PATH_POSTS } from '../constantes'
 import { useEffect, useState } from "react"
+import { useNavigate } from 'react-router-dom'
+import CardComentario from '../src/components/card'
 
 
 export default function Posts() {
-
-    const [data, setData] = useState("")
-    // const { token } = useContexto()
-    // const verifyJWT = async () => {
-    //     console.log(token)
-    //     return await Fetch(API_URL + PATH_POSTS, 'POST', token)
-
-    // }
+    const [data, setData] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        setData(token)
-    })
+        Fetch(API_URL + PATH_POSTS + "/todos", 'GET', "")
+            .then((x) => {
+                if (x.error) {
+                    navigate("/error?error=" + x.error)
+                } else {
+                    setData(x.data)
+                }
+            })
+        console.log(data)
+    }, [])
 
 
-    {
-        if (data) return (<div>todos los Posts</div>)
-        return (<div>Primero legueate.</div>)
-    }
+
+    return (
+        <>
+            {
+                data.map(x => (
+                    <CardComentario
+                        key={x._id}
+                        title={x.title}
+                        autor={x.autor}
+                        description={x.description}
+                        imgURL={x.imgURL}
+                    />
+                ))
+            }
+        </>
+    )
+
 
 
 }

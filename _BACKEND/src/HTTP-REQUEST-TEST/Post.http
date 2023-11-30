@@ -1,0 +1,4 @@
+# getAll
+GET http://localhost:3000/posts/todos  HTTP/1.1
+
+###

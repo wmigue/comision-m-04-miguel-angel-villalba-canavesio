@@ -6,6 +6,7 @@ export default function useOnChange(estructuraObj) {
 
     const setear = (e) => {
         setDataForm({ ...dataForm, [e.target.name]: e.target.value })
+        console.log(dataForm)
     }
 
     return { dataForm, setear }

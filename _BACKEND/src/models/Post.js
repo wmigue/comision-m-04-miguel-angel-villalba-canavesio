@@ -5,7 +5,7 @@ const postSchema = new Schema({
     description: { type: String, required: true },
     autor: { type: Schema.Types.ObjectId, ref: 'User' },
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    imageURL: { type: String },
+    imgURL: { type: String },
     createdAt: { type: Date, default: Date.now }
 })
 
