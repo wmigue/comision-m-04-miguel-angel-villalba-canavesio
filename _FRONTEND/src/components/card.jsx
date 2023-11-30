@@ -3,13 +3,15 @@ import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 
+
 export default function CardComentario(children) {
     const { title, description, autor, imgURL } = children
     return (
-        <div>
-            <Card className="text-center p-0" >
+        <div className="d-flex justify-content-center ">
+
+            <Card className="text-center p-0" style={{ width: '700px', marginBottom: '25px', minWidth: "300px" }}>
                 <Card.Header>
-                    <Col xs={6} md={4}>
+                    <Col xs={6} md={6}>
                         <Image src={autor.avatarURL} roundedCircle />
                     </Col>
                     {autor.email}

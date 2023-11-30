@@ -1,18 +1,20 @@
 import { Nav } from 'react-bootstrap'
 import './navbar.css'
+import { NavLink } from 'react-router-dom'
+import ContainerFluid from '../../layouts/layout'
 
 export default function NavBarra() {
 
     return (
-        <div className={'headerizar'}>
-            <Nav>
-                <Nav.Item>
-                    <Nav.Link eventKey="link-1">Posts</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link eventKey="link-2">Nuevo</Nav.Link>
-                </Nav.Item>
 
+        <div className={'headerizar'}>
+            <Nav defaultActiveKey="/home" as="ul" className='bg-light pb-6'>
+                <Nav.Item as="li">
+                    <Nav.Link href="/posts">POSTS</Nav.Link>
+                </Nav.Item>
+                <Nav.Item as="li">
+                    <Nav.Link href="/posts/nuevo">NUEVO</Nav.Link>
+                </Nav.Item>
             </Nav>
         </div>
 
