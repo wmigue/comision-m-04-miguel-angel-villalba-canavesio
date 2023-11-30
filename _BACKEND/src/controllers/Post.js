@@ -14,7 +14,8 @@ PostController.index = async (req, res) => {
 
 PostController.getAll = async (req, res) => {
     try {
-        const posts = await postModel.find({}).populate('autor')
+        // con sort ordeno los post de mas recientes a mas antiguos
+        const posts = await postModel.find({}).sort({ createdAt: -1 }).populate('autor')
         return res.json({ data: posts })
     } catch (e) {
         return res.status(500).json({

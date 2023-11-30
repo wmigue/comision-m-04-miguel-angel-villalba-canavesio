@@ -11,7 +11,7 @@ function App() {
   return (
     <>
 
-      <LoginForm nombreFormulario={"Posteador"} />
+      <LoginForm nombreFormulario={"Login"} />
     </>
   )
 }

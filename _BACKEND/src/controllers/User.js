@@ -1,3 +1,6 @@
+
+const path = require('path')
+
 const { signToken } = require('../utils/JWT.js')
 
 const userModel = require('./../models/User.js')
@@ -31,10 +34,42 @@ UserController.getOne = async (req, res) => {
 
 
 UserController.create = async (req, res) => {
-    const { username, password, email, avatarURL } = req.body
+    const { password, email } = req.body
+    console.log(req.body)
+    console.log(req.files)
+    const archivo = req.files.avatarURL
     try {
-        const user = await userModel.create({ username, password, email, avatarURL })
-        return res.json({ mensaje: 'usuario creado con exito.', data: user })
+        let avatar
+        const username = email
+        let user = await userModel.findOne({ email: email })
+        if (user) {
+            res.status(409).json({ mensaje: "ese email ya existe. elegir otro" })
+        } else {
+
+            avatar = archivo.name
+            console.log(avatar)
+
+            if (!req.files || Object.keys(req.files).length === 0) {
+                return res.status(400).send('No files were uploaded.')
+            }
+
+            const ruta = path.join(__dirname, '../public/uploads/', archivo.name)
+            archivo.mv(ruta, function (err) {
+                console.log(__dirname + '/public/uploads/' + archivo.name)
+                if (err) {
+                    return res.status(500).send(err)
+                }
+
+            })
+
+
+            console.log("aca!!!" + avatar)
+            user = await userModel.create({ username: username, password: password, email: email, avatarURL: avatar })
+            return res.json({ mensaje: 'usuario creado con exito.', data: user })
+        }
+
+
+
     } catch (e) {
         return res.status(500).json({ mensaje: "error interno del server: " + e })
     }

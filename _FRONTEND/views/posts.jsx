@@ -10,6 +10,8 @@ export default function Posts() {
     const [data, setData] = useState([])
     const navigate = useNavigate()
 
+
+
     useEffect(() => {
         Fetch(API_URL + PATH_POSTS + "/todos", 'GET', "")
             .then((x) => {
@@ -31,9 +33,10 @@ export default function Posts() {
                     <CardComentario
                         key={x._id}
                         title={x.title}
-                        autor={x.autor}
+                        autor={x.autor} // estas populado, trae todos sus datos 
                         description={x.description}
                         imgURL={x.imgURL}
+                        createdAt={x.createdAt}
                     />
                 ))
             }

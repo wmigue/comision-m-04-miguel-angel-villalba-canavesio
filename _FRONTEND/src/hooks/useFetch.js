@@ -1,31 +1,41 @@
 
 
-export default async function Fetch(url, method, token = "", body = "") {
+export default async function Fetch(url, method, token = "", body = "", fd_con_adjunto = "") {
     let response
 
     try {
 
-        if (body !== "") {
+        if (fd_con_adjunto !== "") {
+            console.log(fd_con_adjunto)
             response = await fetch(url, {
                 method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token !== "" ? `Bearer ${token}` : ""
-                },
-                body: JSON.stringify(body)
+                body: fd_con_adjunto
             })
-
         } else {
+            if (body !== "") {
+                response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token !== "" ? `Bearer ${token}` : ""
+                    },
+                    body: JSON.stringify(body)
+                })
 
-            response = await fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token ? `Bearer ${token}` : ""
-                },
-            })
+            } else {
 
+                response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token ? `Bearer ${token}` : ""
+                    },
+                })
+
+            }
         }
+
+
 
         const json = await response.json()
         console.log(json)

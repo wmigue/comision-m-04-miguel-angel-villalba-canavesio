@@ -3,8 +3,8 @@ import { Button, Form, FloatingLabel, InputGroup } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 import Fetch from '../src/hooks/useFetch'
 import useOnChange from '../src/hooks/useOnChange'
-import { API_URL, PATH_POSTS, PATH_USERS, PATH_USERS_LOGIN } from '../constantes'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { API_URL, PATH_POSTS } from '../constantes'
+import { useNavigate } from 'react-router-dom'
 import { useContexto } from '../src/context/contexto'
 
 function NewPost() {
@@ -41,6 +41,7 @@ function NewPost() {
 
             <FloatingLabel controlId="floatingTextarea2" label="titulo" className='mb-3'>
                 <Form.Control
+                    required
                     onChange={(e) => setear(e)}
                     name="title"
                     as="input"
@@ -53,6 +54,7 @@ function NewPost() {
 
             <FloatingLabel controlId="floatingTextarea2" label="escribe el post" className='mb-3'>
                 <Form.Control
+                    required
                     onChange={(e) => setear(e)}
                     name="description"
                     as="textarea"

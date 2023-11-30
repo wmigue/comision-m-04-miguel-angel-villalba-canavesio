@@ -8,6 +8,7 @@ import Posts from '../views/posts.jsx'
 import Error from '../views/error.jsx'
 import { ContextoProvider } from './context/contexto.jsx'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Registro from '../views/registro.jsx'
 
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/error",
     element: <ContextoProvider><Error /></ContextoProvider>,
+  },
+  {
+    path: "users/registro",
+    element: <ContextoProvider><Registro /></ContextoProvider>,
   },
 ])
 
