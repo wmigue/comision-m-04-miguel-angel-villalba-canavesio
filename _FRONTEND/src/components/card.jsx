@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card'
 import { useEffect } from 'react'
 import { Form, FloatingLabel, Container, Accordion, Row, Col, Toast } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
-import { API_URL, PATH_AVATARS, PATH_COMENTS } from '../../constantes'
+import { API_URL, PATH_AVATARS, PATH_POSTS, PATH_COMENTS } from '../../constantes'
 import { formateoDates } from '../utils/dates'
 
 import { useState } from 'react'
@@ -17,7 +17,7 @@ import { sortMasRecienteAMasAntiguos } from '../utils/mongoDbUtils'
 
 
 
-
+//el post
 export default function CardComentario(children) {
 
     const { _id, comments, title, description, autor, imgURL, createdAt } = children
@@ -54,6 +54,25 @@ export default function CardComentario(children) {
     }
 
 
+
+    const handleEliminar = async (e, id_post) => {
+        e.preventDefault()
+        //console.log(dataForm)
+        await Fetch(API_URL + PATH_POSTS + "/eliminar", 'POST', token, { id: id_post })
+            .then((x) => {
+                if (x.error) {
+                    console.log(x.error)
+                    navigate("/error?error=" + x.error)
+                } else {
+                    console.log(x.mensaje)
+                    window.location.reload()
+                }
+            })
+    }
+
+
+
+
     useEffect(() => {
         const t = localStorage.getItem("token")
         setToken(t)
@@ -66,7 +85,9 @@ export default function CardComentario(children) {
             <Card className="text-center p-0 " style={{ width: '700px', marginBottom: '55px', minWidth: "300px" }}>
                 <Card.Header>
                     <Image width={50} height={50} src={API_URL + PATH_AVATARS + "/" + autor.avatarURL} roundedCircle />
-                    <p> <b>Autor: </b>{autor.email}</p>
+                    <p> <b>Autor: </b>{autor.email}
+                        <br /><b>{formateoDates(createdAt)}</b>
+                    </p>
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
@@ -84,8 +105,8 @@ export default function CardComentario(children) {
 
                                 sortedComments.map((x) => (
                                     <>
-                                        <Toast className="d-inline-block m-1 w-75"  >
-                                            <Toast.Header>
+                                        <Toast className="d-inline-block m-1 w-75 " >
+                                            <Toast.Header closeButton={false}>
                                                 <strong className="me-auto">{x.email}</strong>
                                                 <small>  {formateoDates(x.createdAt)}</small>
                                             </Toast.Header>
@@ -93,28 +114,6 @@ export default function CardComentario(children) {
                                                 {x.description}
                                             </Toast.Body>
                                         </Toast>
-
-
-                                        {/* <Accordion.Item eventKey="0" style={{ width: "600px" }}>
-                                            <Accordion.Header >
-
-                                                <Row className='w-100' >
-                                                    <Col sm={6}>
-                                                        {x.email}
-                                                    </Col>
-                                                    <Col sm={6} style={{ width: "100%" }}>
-                                                        <b style={{ fontSize: "11px" }} >
-                                                            {formateoDates(x.createdAt)}
-                                                        </b>
-                                                    </Col>
-                                                </Row>
-
-                                            </Accordion.Header>
-                                            <Accordion.Body className='bg-light'>
-                                                {x.description}
-
-                                            </Accordion.Body>
-                                        </Accordion.Item> */}
 
                                     </>
                                 ))
@@ -128,9 +127,12 @@ export default function CardComentario(children) {
 
 
                 </Card.Body>
-                <Card.Footer className="text-muted">{formateoDates(createdAt)}</Card.Footer>
+                <Card.Footer className="text-muted"></Card.Footer>
                 <Button variant="primary" onClick={handleShow}>
                     comentar
+                </Button>
+                <Button variant="danger mt-1" onClick={(e) => handleEliminar(e, _id)} >
+                    eliminar
                 </Button>
 
                 <Modal show={show} onHide={handleClose}>

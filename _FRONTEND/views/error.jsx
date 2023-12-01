@@ -9,7 +9,7 @@ function Error() {
 
     return (
         <div>
-            <b>ERROR:</b> nos estas autenticado : {error} <br /> <br />
+            <b>ERROR:</b> {error} <br /> <br />
             <a className='btn btn-primary' href='/'>ir a login</a>
         </div>
     )

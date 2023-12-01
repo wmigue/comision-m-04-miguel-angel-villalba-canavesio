@@ -43,6 +43,24 @@ PostController.create = async (req, res) => {
 
 
 
+PostController.deletear = async (req, res) => {
+    const { id } = req.body
+    try {
+        const postExiste = await postModel.findOne({ _id: id, autor: req.user_buscado })
+        if (!postExiste) {
+            return res.status(404).json({ error: "no podes eliminar un post que creo otra persona." })
+        } else {
+            await postModel.deleteOne({ _id: id, autor: req.user_buscado })
+            return res.json({ mensaje: 'eliminado  con exito.' })
+        }
+
+    } catch (e) {
+        return res.status(500).json({ error: "error interno del server: " + e })
+    }
+}
+
+
+
 
 
 module.exports = PostController
