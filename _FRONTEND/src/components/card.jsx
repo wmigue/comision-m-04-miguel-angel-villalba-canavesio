@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import { useEffect } from 'react'
-import { Form, FloatingLabel, Container, Accordion, Row, Col } from 'react-bootstrap'
+import { Form, FloatingLabel, Container, Accordion, Row, Col, Toast } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import { API_URL, PATH_AVATARS, PATH_COMENTS } from '../../constantes'
 import { formateoDates } from '../utils/dates'
@@ -31,8 +31,7 @@ export default function CardComentario(children) {
     const { dataForm, setear } = useOnChange({ description: "", _id_post: _id })
     const [token, setToken] = useState("")
 
-
-
+    const navigate = useNavigate()
 
     // Ordenar los comments de mas recientes a mas antiguos
     const sortedComments = sortMasRecienteAMasAntiguos(comments)
@@ -45,8 +44,10 @@ export default function CardComentario(children) {
             .then((x) => {
                 if (x.error) {
                     console.log(x.error)
+                    navigate("/error?error=" + x.error)
                 } else {
                     console.log(x.mensaje)
+                    handleClose()
                     window.location.reload()
                 }
             })
@@ -77,18 +78,27 @@ export default function CardComentario(children) {
                     <hr /><br /><br />
 
                     <Container style={{ display: "flex", justifyContent: "center" }}>
-                        <Accordion defaultActiveKey="0" flush>
+                        <Accordion defaultActiveKey="0" flush >
 
                             {
 
                                 sortedComments.map((x) => (
                                     <>
+                                        <Toast className="d-inline-block m-1 w-75"  >
+                                            <Toast.Header>
+                                                <strong className="me-auto">{x.email}</strong>
+                                                <small>  {formateoDates(x.createdAt)}</small>
+                                            </Toast.Header>
+                                            <Toast.Body className={'text-dark'}>
+                                                {x.description}
+                                            </Toast.Body>
+                                        </Toast>
 
 
-                                        <Accordion.Item eventKey="0" style={{ width: "600px" }}>
-                                            <Accordion.Header>
+                                        {/* <Accordion.Item eventKey="0" style={{ width: "600px" }}>
+                                            <Accordion.Header >
 
-                                                <Row className='w-100'>
+                                                <Row className='w-100' >
                                                     <Col sm={6}>
                                                         {x.email}
                                                     </Col>
@@ -100,11 +110,11 @@ export default function CardComentario(children) {
                                                 </Row>
 
                                             </Accordion.Header>
-                                            <Accordion.Body>
+                                            <Accordion.Body className='bg-light'>
                                                 {x.description}
 
                                             </Accordion.Body>
-                                        </Accordion.Item>
+                                        </Accordion.Item> */}
 
                                     </>
                                 ))
