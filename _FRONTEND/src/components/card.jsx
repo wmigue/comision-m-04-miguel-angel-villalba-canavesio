@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import { useEffect } from 'react'
-import { Form, FloatingLabel } from 'react-bootstrap'
+import { Form, FloatingLabel, Container, Accordion, Row, Col } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import { API_URL, PATH_AVATARS, PATH_COMENTS } from '../../constantes'
 import { formateoDates } from '../utils/dates'
@@ -11,10 +11,17 @@ import Modal from 'react-bootstrap/Modal'
 
 import useOnChange from '../hooks/useOnChange'
 import Fetch from '../hooks/useFetch'
+import { useNavigate } from 'react-router-dom'
+import { sortMasRecienteAMasAntiguos } from '../utils/mongoDbUtils'
+
+
+
+
 
 export default function CardComentario(children) {
 
     const { _id, comments, title, description, autor, imgURL, createdAt } = children
+    console.log(comments)
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -23,6 +30,12 @@ export default function CardComentario(children) {
 
     const { dataForm, setear } = useOnChange({ description: "", _id_post: _id })
     const [token, setToken] = useState("")
+
+
+
+
+    // Ordenar los comments de mas recientes a mas antiguos
+    const sortedComments = sortMasRecienteAMasAntiguos(comments)
 
 
     const handleSubmit = async (e) => {
@@ -34,6 +47,7 @@ export default function CardComentario(children) {
                     console.log(x.error)
                 } else {
                     console.log(x.mensaje)
+                    window.location.reload()
                 }
             })
     }
@@ -48,10 +62,10 @@ export default function CardComentario(children) {
     return (
         <div className="d-flex justify-content-center ">
 
-            <Card className="text-center p-0" style={{ width: '700px', marginBottom: '55px', minWidth: "300px" }}>
+            <Card className="text-center p-0 " style={{ width: '700px', marginBottom: '55px', minWidth: "300px" }}>
                 <Card.Header>
                     <Image width={50} height={50} src={API_URL + PATH_AVATARS + "/" + autor.avatarURL} roundedCircle />
-                    <p> {autor.email}</p>
+                    <p> <b>Autor: </b>{autor.email}</p>
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
@@ -59,8 +73,50 @@ export default function CardComentario(children) {
                     <Card.Text>
                         {description}
                     </Card.Text>
-                    <h3>comentarios: </h3>
-                    {comments.map(x => <div key={x}>{x}</div>)}
+
+                    <hr /><br /><br />
+
+                    <Container style={{ display: "flex", justifyContent: "center" }}>
+                        <Accordion defaultActiveKey="0" flush>
+
+                            {
+
+                                sortedComments.map((x) => (
+                                    <>
+
+
+                                        <Accordion.Item eventKey="0" style={{ width: "600px" }}>
+                                            <Accordion.Header>
+
+                                                <Row className='w-100'>
+                                                    <Col sm={6}>
+                                                        {x.email}
+                                                    </Col>
+                                                    <Col sm={6} style={{ width: "100%" }}>
+                                                        <b style={{ fontSize: "11px" }} >
+                                                            {formateoDates(x.createdAt)}
+                                                        </b>
+                                                    </Col>
+                                                </Row>
+
+                                            </Accordion.Header>
+                                            <Accordion.Body>
+                                                {x.description}
+
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+
+                                    </>
+                                ))
+
+                            }
+
+                        </Accordion>
+                    </Container>
+
+
+
+
                 </Card.Body>
                 <Card.Footer className="text-muted">{formateoDates(createdAt)}</Card.Footer>
                 <Button variant="primary" onClick={handleShow}>
@@ -96,7 +152,7 @@ export default function CardComentario(children) {
 
             </Card>
             <br />
-        </div>
+        </div >
 
 
     )

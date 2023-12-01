@@ -19,11 +19,10 @@ CommentController.create = async (req, res) => {
             const { description, _id_post } = req.body
             decoded = await jwt.verify(tokenSinBearer, 'aleatorio')
             const { email, _id } = decoded
-            const nuevoComentario = await CommentModel.create({ description: description, autor: _id })
-            await postModel.updateOne(
-                { _id: _id_post }, // Filtro para encontrar la publicación específica
-                { $push: { comments: nuevoComentario } },
-            )
+            const nuevoComentario = await CommentModel.create({ description: description, autor: _id, email: email })
+            const postEnQuestion = await postModel.findById(_id_post)
+            postEnQuestion.comments.push(nuevoComentario)
+            await postEnQuestion.save()
             return res.json({ mensaje: 'comment creado con exito.' })
         }
     } catch (e) {
