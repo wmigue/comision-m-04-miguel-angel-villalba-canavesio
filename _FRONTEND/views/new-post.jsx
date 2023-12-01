@@ -5,7 +5,7 @@ import Fetch from '../src/hooks/useFetch'
 import useOnChange from '../src/hooks/useOnChange'
 import { API_URL, PATH_POSTS } from '../constantes'
 import { useNavigate } from 'react-router-dom'
-import { useContexto } from '../src/context/contexto'
+
 
 function NewPost() {
 

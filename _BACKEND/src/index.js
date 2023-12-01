@@ -11,7 +11,7 @@ const conectarMongo = require('./config/Mongoose.js')
 
 const userRouter = require('./routes/User.js')
 const postRouter = require('./routes/Post.js')
-// const commentRouter = require('./routes/Comment.js')
+const commentRouter = require('./routes/Comment.js')
 // const authRouter = require('./routes/auth.js')
 
 const app = express()
@@ -34,7 +34,7 @@ app.use(morgan(':method :url :status '))
 // Rutas
 app.use('/users', userRouter)
 app.use('/posts', postRouter)
-// app.use(commentRouter)
+app.use('/comments', commentRouter)
 // app.use(authRouter)
 
 

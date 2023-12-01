@@ -17,6 +17,9 @@ export default function NavBarra() {
                 <Nav.Item as="li">
                     <Nav.Link href="/users/registro">REGISTRARSE</Nav.Link>
                 </Nav.Item>
+                <Nav.Item as="li">
+                    <Nav.Link href="/">LOGIN</Nav.Link>
+                </Nav.Item>
             </Nav>
         </div>
 

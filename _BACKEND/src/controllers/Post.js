@@ -1,6 +1,7 @@
 
 
 
+const commentModel = require('../models/Comment.js')
 const postModel = require('./../models/Post.js')
 
 
@@ -15,7 +16,17 @@ PostController.index = async (req, res) => {
 PostController.getAll = async (req, res) => {
     try {
         // con sort ordeno los post de mas recientes a mas antiguos
-        const posts = await postModel.find({}).sort({ createdAt: -1 }).populate('autor')
+        const posts = await postModel.find({}).sort({ createdAt: -1 })
+            .populate('autor')
+
+        // const comentarios = {}
+        // posts.map(x => {
+        //     const comentario = commentModel.find({ _id: x.comments })
+        //     comentarios.push(comentario)
+        // })
+
+
+
         return res.json({ data: posts })
     } catch (e) {
         return res.status(500).json({

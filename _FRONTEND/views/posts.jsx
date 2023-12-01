@@ -32,11 +32,13 @@ export default function Posts() {
                 data.map(x => (
                     <CardComentario
                         key={x._id}
+                        _id={x._id}
                         title={x.title}
                         autor={x.autor} // estas populado, trae todos sus datos 
                         description={x.description}
                         imgURL={x.imgURL}
                         createdAt={x.createdAt}
+                        comments={x.comments}
                     />
                 ))
             }
