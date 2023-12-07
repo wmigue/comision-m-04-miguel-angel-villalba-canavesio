@@ -1,37 +1,31 @@
 
 import { Button, Form, FloatingLabel, InputGroup } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
 import Fetch from '../src/hooks/useFetch'
 import useOnChange from '../src/hooks/useOnChange'
 import { API_URL, PATH_POSTS } from '../constantes'
 import { useNavigate } from 'react-router-dom'
+import { useContexto } from '../src/context/contexto'
 
 
 function NewPost() {
 
     const { dataForm, setear } = useOnChange({ title: "", description: "", imgURL: "" })
-    const [token, setToken] = useState("")
+    const { tokens } = useContexto()
     const navigate = useNavigate()
 
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await Fetch(API_URL + PATH_POSTS + "/nuevo", 'POST', token, dataForm)
+        await Fetch(API_URL + PATH_POSTS + "/nuevo", 'POST', tokens, dataForm)
             .then((x) => {
                 if (x.error) {
-                    navigate("/error?error=" + x.error)
+                    navigate("/error?error=" + x.error + "&ira=ir a login&iraurl=")
                 } else {
                     navigate("/posts")
                 }
             })
     }
 
-
-    useEffect(() => {
-        const t = localStorage.getItem("token")
-        setToken(t)
-
-    })
 
 
 

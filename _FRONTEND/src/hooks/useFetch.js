@@ -6,7 +6,7 @@ export default async function Fetch(url, method, token = "", body = "", fd_con_a
     try {
 
         if (fd_con_adjunto !== "") {
-            console.log(fd_con_adjunto)
+
             response = await fetch(url, {
                 method: method,
                 body: fd_con_adjunto
@@ -38,7 +38,7 @@ export default async function Fetch(url, method, token = "", body = "", fd_con_a
 
 
         const json = await response.json()
-        console.log(json)
+
         return json
 
     } catch (err) {

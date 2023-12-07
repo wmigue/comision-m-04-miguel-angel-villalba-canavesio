@@ -10,27 +10,30 @@ export default function LoginForm(props) {
     const navigate = useNavigate()
     const { nombreFormulario } = props
     const { dataForm, setear } = useOnChange({ email: '', password: '' })
-    const { setToken } = useContexto()
+    const { setTokens, setAvatar } = useContexto()
 
     const handleSubmit = (e) => {
         e.preventDefault()
         Fetch(API_URL + PATH_USERS + PATH_USERS_LOGIN, 'POST', "", dataForm)
             .then((x) => {
                 if (x.token) {
-                    // console.log(x.token)
-                    setToken(x.token)
-                    localStorage.setItem("token", x.token)
-                    navigate('/posts')
+                    // console.log(x)
+                    // localStorage.setItem("token", x.token)
+                    setTokens(x.token)
+                    setAvatar({ img: x.avatar, email: x.email })
                 }
-            })
+            }).then(navigate('/posts'))
     }
 
-    console.log(dataForm)
+    // console.log(dataForm)
 
     return (
 
         <Form onSubmit={handleSubmit}>
             <h3 className='mb-3'>{nombreFormulario}</h3>
+
+            <img className='pb-3' width={200} src='../public/img/logo.png' />
+
             <Form.Control size="md" type="text" className='m-1' placeholder="email" name="email" onChange={(e) => setear(e)} />
 
             <Form.Control size="md" type="text" className='m-1' placeholder="password" name="password" onChange={(e) => setear(e)} />

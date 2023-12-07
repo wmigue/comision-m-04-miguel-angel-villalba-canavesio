@@ -18,7 +18,7 @@ PostController.getAll = async (req, res) => {
         // con sort ordeno los post de mas recientes a mas antiguos
         const posts = await postModel.find({}).sort({ createdAt: -1 })
             .populate('autor')
-        console.log(posts)
+        // console.log(posts)
         return res.json({ data: posts })
     } catch (e) {
         return res.status(500).json({

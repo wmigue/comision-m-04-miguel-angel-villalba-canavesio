@@ -5,12 +5,12 @@ import useOnChange from '../src/hooks/useOnChange'
 import { API_URL, PATH_USERS } from '../constantes'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useContexto } from '../src/context/contexto'
 
 
 
 export default function Registro() {
     const navigate = useNavigate()
-
 
     const { dataForm, setear } = useOnChange({ email: '', password: '', avatarURL: '' })
 
@@ -19,9 +19,7 @@ export default function Registro() {
     fd.append('password', dataForm.password)
 
     const avatarOnChange = (e) => {
-        console.log(e.target.files[0])
         fd.append('avatarURL', e.target.files[0])
-        console.log(fd)
     }
 
     const handleSubmit = (e) => {
@@ -30,16 +28,12 @@ export default function Registro() {
             .then((x) => {
                 if (x.data) {
                     alert(x.mensaje)
-                    navigate('/')
+                    navigate('/posts')
                 }
             })
     }
 
 
-
-    useEffect(() => {
-        localStorage.removeItem("token")
-    }, [])
 
 
     return (

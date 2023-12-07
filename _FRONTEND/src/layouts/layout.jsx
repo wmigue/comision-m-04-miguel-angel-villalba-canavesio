@@ -1,17 +1,20 @@
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import NavBarra from '../components/navbar/navbar'
+import { ContextoProvider } from '../context/contexto'
+import LayAuth from './layAuth'
 
-function ContainerFluid({ children }) {
+function LayOut({ children }) {
+
     return (
-        <Container fluid>
-            <Row>
-                <Col>
+        <ContextoProvider>
+            <Container fluid>
+                <NavBarra />
+                <LayAuth>
                     {children}
-                </Col>
-            </Row>
-        </Container>
+                </LayAuth>
+            </Container>
+        </ContextoProvider>
     )
 }
 
-export default ContainerFluid
+export default LayOut

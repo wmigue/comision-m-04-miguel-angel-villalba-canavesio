@@ -2,14 +2,18 @@ import { createContext, useContext, useState } from "react"
 
 export const MiContexto = createContext()
 
+
+
 export const ContextoProvider = ({ children }) => {
 
-    const [token, setToken] = useState("")
+    const [tokens, setTokens] = useState("")
+    const [avatar, setAvatar] = useState({ img: "", email: "" })
 
-    return <MiContexto.Provider value={{ token, setToken }}>
+    return <MiContexto.Provider value={{ tokens, setTokens, avatar, setAvatar }}>
         {children}
     </MiContexto.Provider>
 }
+
 
 export const useContexto = () => {
     const context = useContext(MiContexto)

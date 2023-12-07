@@ -4,7 +4,7 @@ const UserModel = require('../models/User')
 
 const isAuthenticated = async (req, res, next) => {
     try {
-        console.log("isAuthenticated middleware ejecutandose!!!")
+        ("isAuthenticated middleware ejecutandose!!!")
         const token = req.headers.authorization
         if (!token) {
             return res.status(403).json({ error: "usuario no autenticado / error de credenciales." })

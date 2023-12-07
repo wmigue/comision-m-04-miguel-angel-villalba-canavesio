@@ -11,26 +11,30 @@ export default function Posts() {
     const navigate = useNavigate()
 
 
-
-    useEffect(() => {
+    const getAllPosts = () => {
         Fetch(API_URL + PATH_POSTS + "/todos", 'GET', "")
             .then((x) => {
                 if (x.error) {
-                    navigate("/error?error=" + x.error)
+                    navigate("/error?error=" + x.error + "&ira=recargar&iraurl=posts")
                 } else {
                     setData(x.data)
                 }
             })
         console.log(data)
+    }
+
+    useEffect(() => {
+        getAllPosts()
     }, [])
 
 
 
     return (
-        <>
+        <div className='mt-5 pt-5'>
             {
                 data.map(x => (
                     <CardComentario
+                        getAllPosts={getAllPosts}
                         key={x._id}
                         _id={x._id}
                         title={x.title}
@@ -42,7 +46,7 @@ export default function Posts() {
                     />
                 ))
             }
-        </>
+        </div>
     )
 
 

@@ -12,7 +12,7 @@ const conectarMongo = require('./config/Mongoose.js')
 const userRouter = require('./routes/User.js')
 const postRouter = require('./routes/Post.js')
 const commentRouter = require('./routes/Comment.js')
-// const authRouter = require('./routes/auth.js')
+
 
 const app = express()
 
@@ -26,8 +26,8 @@ app.use(
 )
 
 // Configurar la carpeta estática pública
-app.use('/public', express.static(path.join(__dirname, 'public')))
-app.use("/temp", express.static("./public/temp"))
+//app.use(un-alias, directorio-real)
+app.use('/public-files', express.static(path.join(__dirname, '../public/uploads')))
 app.use(cors())
 app.use(morgan(':method :url :status '))
 
@@ -39,5 +39,5 @@ app.use('/comments', commentRouter)
 
 
 conectarMongo()
-    .then(() => app.listen(process.env.PORT, () => console.log("Servidor corriendo en puerto: " + process.env.PORT)))
-    .catch((e) => console.log(e.message))
+    .then(() => app.listen(process.env.PORT, () => ("Servidor corriendo en puerto: " + process.env.PORT)))
+    .catch((e) => (e.message))

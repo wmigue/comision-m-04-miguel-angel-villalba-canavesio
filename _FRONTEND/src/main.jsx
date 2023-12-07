@@ -9,36 +9,41 @@ import Error from '../views/error.jsx'
 import { ContextoProvider } from './context/contexto.jsx'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Registro from '../views/registro.jsx'
+import LoginForm from './components/loginForm.jsx'
+import LayOut from './layouts/layout.jsx'
+
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ContextoProvider><App /></ContextoProvider>,
+    element: <LayOut><LoginForm /></LayOut>,
   },
   {
     path: "/posts",
-    element: <ContextoProvider><Posts /></ContextoProvider>,
+    element: <LayOut><Posts /></LayOut>,
   },
   {
     path: "/posts/nuevo",
-    element: <ContextoProvider><NewPost /></ContextoProvider>,
+    element: <LayOut><NewPost /></LayOut>,
   },
   {
     path: "/error",
-    element: <ContextoProvider><Error /></ContextoProvider>,
+    element: <LayOut><Error /></LayOut>,
   },
   {
     path: "users/registro",
-    element: <ContextoProvider><Registro /></ContextoProvider>,
+    element: <LayOut><Registro /></LayOut>,
   },
 ])
 
 
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+
     <RouterProvider router={router} />
-    <NavBarra />
+
   </React.StrictMode>,
 )

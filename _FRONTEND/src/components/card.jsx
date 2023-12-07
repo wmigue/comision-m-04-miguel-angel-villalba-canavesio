@@ -1,7 +1,8 @@
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import { Row, Col } from 'react-bootstrap'
 import { useEffect } from 'react'
-import { Form, FloatingLabel, Container, Accordion, Row, Col, Toast } from 'react-bootstrap'
+import { Form, FloatingLabel, Container, Accordion, Toast } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import { API_URL, PATH_AVATARS, PATH_POSTS, PATH_COMENTS } from '../../constantes'
 import { formateoDates } from '../utils/dates'
@@ -13,6 +14,8 @@ import useOnChange from '../hooks/useOnChange'
 import Fetch from '../hooks/useFetch'
 import { useNavigate } from 'react-router-dom'
 import { sortMasRecienteAMasAntiguos } from '../utils/mongoDbUtils'
+import { scrollToTop } from '../utils/windows-utils'
+import { useContexto } from '../context/contexto'
 
 
 
@@ -20,8 +23,8 @@ import { sortMasRecienteAMasAntiguos } from '../utils/mongoDbUtils'
 //el post
 export default function CardComentario(children) {
 
-    const { _id, comments, title, description, autor, imgURL, createdAt } = children
-    console.log(comments)
+    const { _id, comments, title, description, autor, imgURL, createdAt, getAllPosts } = children
+
 
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -29,8 +32,7 @@ export default function CardComentario(children) {
 
 
     const { dataForm, setear } = useOnChange({ description: "", _id_post: _id })
-    const [token, setToken] = useState("")
-
+    const { tokens, avatar } = useContexto()
     const navigate = useNavigate()
 
     // Ordenar los comments de mas recientes a mas antiguos
@@ -39,16 +41,18 @@ export default function CardComentario(children) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        //console.log(dataForm)
-        await Fetch(API_URL + PATH_COMENTS + "/nuevo", 'POST', token, dataForm)
+        await Fetch(API_URL + PATH_COMENTS + "/nuevo", 'POST', tokens, dataForm)
             .then((x) => {
                 if (x.error) {
-                    console.log(x.error)
-                    navigate("/error?error=" + x.error)
+
+                    navigate("/error?error=" + x.error + "&ira=ir a login&iraurl=")
                 } else {
-                    console.log(x.mensaje)
+
                     handleClose()
-                    window.location.reload()
+                    navigate("/posts")
+                    getAllPosts()
+
+
                 }
             })
     }
@@ -57,26 +61,22 @@ export default function CardComentario(children) {
 
     const handleEliminar = async (e, id_post) => {
         e.preventDefault()
-        //console.log(dataForm)
-        await Fetch(API_URL + PATH_POSTS + "/eliminar", 'POST', token, { id: id_post })
+        //(dataForm)
+        await Fetch(API_URL + PATH_POSTS + "/eliminar", 'POST', tokens, { id: id_post })
             .then((x) => {
                 if (x.error) {
-                    console.log(x.error)
-                    navigate("/error?error=" + x.error)
+                    (x.error)
+                    navigate("/error?error=" + x.error + "&ira=ir a posts&iraurl=posts")
                 } else {
-                    console.log(x.mensaje)
-                    window.location.reload()
+                    (x.mensaje)
+                    getAllPosts()
+                    scrollToTop()
                 }
             })
     }
 
 
 
-
-    useEffect(() => {
-        const t = localStorage.getItem("token")
-        setToken(t)
-    }, [])
 
 
     return (
@@ -105,7 +105,7 @@ export default function CardComentario(children) {
 
                                 sortedComments.map((x) => (
                                     <>
-                                        <Toast className="d-inline-block m-1 w-75 " >
+                                        <Toast className="d-inline-block m-1 w-100 " >
                                             <Toast.Header closeButton={false}>
                                                 <strong className="me-auto">{x.email}</strong>
                                                 <small>  {formateoDates(x.createdAt)}</small>
@@ -127,15 +127,34 @@ export default function CardComentario(children) {
 
 
                 </Card.Body>
-                <Card.Footer className="text-muted"></Card.Footer>
-                <Button variant="primary" onClick={handleShow}>
-                    comentar
-                </Button>
-                <Button variant="danger mt-1" onClick={(e) => handleEliminar(e, _id)} >
-                    eliminar
-                </Button>
+                <Card.Footer className="text-muted">
+                    <Row className="justify-content-md-center">
+                        <Col xs lg="2">
+                            <Button variant="primary" onClick={handleShow}>
+                                comentar
+                            </Button>
+                        </Col>
 
-                <Modal show={show} onHide={handleClose}>
+                        {
+                            autor.email === avatar.email ? (
+                                <Col xs lg="2">
+
+                                    <Button variant="danger" onClick={(e) => handleEliminar(e, _id)} >
+                                        eliminar
+                                    </Button>
+                                </Col>
+                            ) : null
+                        }
+
+
+                    </Row>
+                </Card.Footer>
+
+
+
+
+
+                <Modal style={{ zIndex: 2000000000 }} show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title></Modal.Title>
                     </Modal.Header>

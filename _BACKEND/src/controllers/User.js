@@ -35,8 +35,8 @@ UserController.getOne = async (req, res) => {
 
 UserController.create = async (req, res) => {
     const { password, email } = req.body
-    console.log(req.body)
-    console.log(req.files)
+    // console.log(req.body)
+    // console.log(req.files)
     const archivo = req.files.avatarURL
     try {
         let avatar
@@ -45,25 +45,22 @@ UserController.create = async (req, res) => {
         if (user) {
             res.status(409).json({ mensaje: "ese email ya existe. elegir otro" })
         } else {
-
             avatar = archivo.name
-            console.log(avatar)
+            // console.log(avatar)
 
             if (!req.files || Object.keys(req.files).length === 0) {
                 return res.status(400).send('No files were uploaded.')
             }
 
-            const ruta = path.join(__dirname, '../public/uploads/', archivo.name)
+            const ruta = path.join(__dirname, '../../public/uploads', archivo.name)
+            console.log(ruta)
             archivo.mv(ruta, function (err) {
-                console.log(__dirname + '/public/uploads/' + archivo.name)
                 if (err) {
                     return res.status(500).send(err)
                 }
 
             })
 
-
-            console.log("aca!!!" + avatar)
             user = await userModel.create({ username: username, password: password, email: email, avatarURL: avatar })
             return res.json({ mensaje: 'usuario creado con exito.', data: user })
         }
@@ -82,12 +79,13 @@ UserController.login = async (req, res) => {
     try {
         const { email, password } = req.body
         let user = await userModel.findOne({ email: email, password: password })
-        console.log(user)
+        // console.log (user)
         if (!user) {
             return res.status(401).json({ mensaje: 'usuario no existe. registrarse.' })
         } else {
             const token = signToken(user._id, user.email)
-            return res.json({ token: token })
+            console.log(user.avatarURL)
+            return res.json({ token: token, avatar: user.avatarURL, email: user.email })
         }
     } catch (err) {
         return res.status(500).json({ mensaje: "error: " + err })
