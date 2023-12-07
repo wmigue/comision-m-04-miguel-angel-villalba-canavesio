@@ -91,7 +91,7 @@ export default function CardComentario(children) {
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
-                    <img src={imgURL}></img>
+                    <img width={500} src={imgURL}></img>
                     <Card.Text>
                         {description}
                     </Card.Text>
