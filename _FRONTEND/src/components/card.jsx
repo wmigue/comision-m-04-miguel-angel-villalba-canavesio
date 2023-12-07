@@ -98,29 +98,38 @@ export default function CardComentario(children) {
 
                     <hr /><br /><br />
 
-                    <Container style={{ display: "flex", justifyContent: "center" }}>
-                        <Accordion defaultActiveKey="0" flush >
+                    <Container style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
 
-                            {
 
-                                sortedComments.map((x) => (
-                                    <>
-                                        <Toast className="d-inline-block m-1 w-100 " >
-                                            <Toast.Header closeButton={false}>
-                                                <strong className="me-auto">{x.email}</strong>
-                                                <small>  {formateoDates(x.createdAt)}</small>
-                                            </Toast.Header>
-                                            <Toast.Body className={'text-dark'}>
-                                                {x.description}
-                                            </Toast.Body>
-                                        </Toast>
+                        {
 
-                                    </>
-                                ))
+                            sortedComments.map((x) => (
+                                <>
+                                    <div style={{ marginBottom: "30px" }}>
+                                        <div
+                                            style={{ backgroundColor: "grey", borderRadius: "10px", color: "white" }}>
+                                            <Col className=''>
+                                                {x.description}<br />
+                                            </Col>
+                                        </div>
+                                        <span >
+                                            <b style={{ fontSize: "10px" }}>
+                                                {x.email}&nbsp;
+                                            </b>
+                                            <small style={{ fontSize: "10px" }}>
+                                                {formateoDates(x.createdAt)}
+                                            </small>
+                                        </span>
+                                    </div>
+                                </>
 
-                            }
 
-                        </Accordion>
+
+                            ))
+
+                        }
+
+
                     </Container>
 
 
